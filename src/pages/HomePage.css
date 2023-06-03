@@ -1,0 +1,33 @@
+.textoBien {
+    border-radius: 9px;
+    font-weight: bold;
+    font-size: 7vw;
+    min-height: 3vh;
+    min-width: 3vw;
+    color: white;
+    position: absolute;
+    top: 40vh;
+    left: 22vw;
+    transform: translate(-50%, -50%);
+}
+
+.contenedorPantalla {
+    position: relative;
+    height: calc(100vh - 70vh);
+}
+
+.fondoPantalla {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    object-fit: cover;
+}
+
+.fondo {
+    place-items: center;
+    min-width: 320px;
+    position: absolute;
+    width: 100%;
+    background: linear-gradient(148deg, rgba(46, 27, 91, 1) 0%, rgba(46, 27, 91, 1) 47%, rgba(13, 175, 208, 1) 100%);
+}

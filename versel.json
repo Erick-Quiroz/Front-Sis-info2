@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "name": "La Ganga",
+  "builds": [
+    {
+      "src": "src/**/*.jsx",
+      "use": "@vercel/static-build",
+    }
+  ],
+  "routes": [
+      {
+        "src": "/Filter",
+        "dest": "/index.html?data=:data"
+      },
+  ]
+}
