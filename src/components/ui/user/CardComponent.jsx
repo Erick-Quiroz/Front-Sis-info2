@@ -45,7 +45,7 @@ export const CardComponent = (props) => {
             }}
         >
             <Col span={8} className="gutter-row" style={{
-                maxHeight: '60vh'
+                maxHeight: '100vh'
             }}>
                 <Card
                     className={styles.card}
@@ -61,7 +61,7 @@ export const CardComponent = (props) => {
                         height: '100%',
                         width: '100%'
                     }}
-                    onClick={handleAddToCart}
+                        onClick={handleAddToCart}
                     />}
                 >
                     <div>precio: {price} Bs</div>

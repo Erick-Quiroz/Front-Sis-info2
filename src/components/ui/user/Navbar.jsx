@@ -9,7 +9,7 @@ import { useCart } from 'react-use-cart'
 import { shopAPI } from '../../../services'
 import { CartContext } from '../../../pages/Cart/contexts/ShoppingCartContext'
 import { ShoppingCartOutlined } from '@ant-design/icons'
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap'
 
 export const Navbar = () => {
   const [Mobile, setMobile] = useState(false)
@@ -19,7 +19,7 @@ export const Navbar = () => {
   const [countProducts, setCountProducts] = useState(0)
   const [categories, setCategories] = useState([])
   const navigate = useNavigate('')
-  const emailAlmacenado = localStorage.getItem('email');
+  const emailAlmacenado = localStorage.getItem('email')
   const handleDropdownItemClick = (event) => {
     navigate('/Filter', { state: { data: `${event}` } })
   }
@@ -61,7 +61,7 @@ export const Navbar = () => {
     <div className="navbar-bg">
       <div className="sb__navbar">
         <Link to={'/'} className='navbar-brand'>
-          <img alt="logo" className='logo' src={imageLogo} style={{ width: 60, height: 50, padding: '0 0 0 5px' }} />
+          <img alt="logo" className='logo' src={imageLogo} style={{ width: '25vh', height: 50, padding: '0 0 0 5px' }} />
         </Link>
         <div className="sb__navbar-links">
           <div className="sb__navbar-links_container ">
@@ -98,13 +98,13 @@ export const Navbar = () => {
               </Link>
             </p>
             {!emailAlmacenado && (
-            <p>
+              <p>
                 <Link to={'/login'} className='nav-link' >
-                <button className="btn btn-outline-success btn_nav" type="submit">
+                  <button className="btn btn-outline-success btn_nav" type="submit">
                     Login
-                </button>
+                  </button>
                 </Link>
-            </p>
+              </p>
             )}
             {emailAlmacenado && (
               <p>
@@ -152,6 +152,21 @@ export const Navbar = () => {
             <div className="sb__navbar-menu_container scale-up-center">
               <div className="sb__navbar-menu_container-links">
                 <p><Search style={{ with: '5' }} /></p>
+                <Dropdown>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    Categorías
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {categories?.map((c) => (
+                      <Dropdown.Item
+                        key={c.name}
+                        onClick={() => handleDropdownItemClick(c.name)}
+                      >
+                        {c.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
                 <p>
                   <Link to={'/shop'} className='nav-link'>
                     <button className="btn btn-outline-success btn_nav" type="submit">
@@ -167,14 +182,14 @@ export const Navbar = () => {
                   </Link>
                 </p>
                 {!emailAlmacenado && (
-                    <p>
-                        <Link to={'/login'} className='nav-link' >
-                        <button className="btn btn-outline-success btn_nav" type="submit">
-                            Login
-                        </button>
-                        </Link>
-                    </p>
-                    )}
+                  <p>
+                    <Link to={'/login'} className='nav-link' >
+                      <button className="btn btn-outline-success btn_nav" type="submit">
+                        Login
+                      </button>
+                    </Link>
+                  </p>
+                )}
                 {emailAlmacenado && (
                   <p>
                     <Link to={'/User'} className='nav-link' >

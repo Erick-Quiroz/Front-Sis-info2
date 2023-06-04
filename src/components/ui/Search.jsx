@@ -1,46 +1,48 @@
-
 import Autosuggest from 'react-autosuggest'
 import { useState, useEffect } from 'react'
 import { shopAPI } from '../../services'
 import { useNavigate } from 'react-router-dom'
-import { SearchOutlined } from '@ant-design/icons'
+import { SearchOutlined, CloseOutlined } from '@ant-design/icons'
 import './SearchComponent.css'
 
 export const Search = () => {
     const [data, setData] = useState([])
     const [value, setValue] = useState('')
-    const [productos, setProductos] = useState(data)
-    const [productoSeleccionado, setProductoseleccionado] = useState({})
+    const [productos, setProductos] = useState([])
+    const [productoSeleccionado, setProductoSeleccionado] = useState({})
+    const [mostrarBuscador, setMostrarBuscador] = useState(false)
     const navigate = useNavigate()
 
-    const getAll = async () => {
-        const { data: { product } } = await shopAPI.get('/productLG/get-productLG')
-        setData(product)
-    }
     useEffect(() => {
         getAll()
     }, [])
 
-    const onSuggestionsFetchRequested = ({ value }) => {
-        setProductos(filtrarproductos(value))
+    const getAll = async () => {
+        try {
+            const response = await shopAPI.get('/productLG/get-productLG')
+            const { product } = response.data
+            setData(product)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    const filtrarproductos = (value) => {
-        const inputValue = value.trim().toLowerCase()
-        const inputLength = inputValue.length
-
-        const filtrado = data.filter((name) => {
-            const textoCompleto = name.name + ' - ' + name.description
-
-            if (textoCompleto.toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .includes(inputValue)) {
-                return name
-            }
-            return false
+    const filtrarProductos = (inputValue) => {
+        const normalizedInput = normalizeString(inputValue)
+        const filtered = data.filter((product) => {
+            const text = `${product.name} - ${product.description}`
+            const normalizedText = normalizeString(text)
+            return normalizedText.includes(normalizedInput)
         })
-        return inputLength === 0 ? [] : filtrado
+        return filtered
+    }
+
+    const normalizeString = (str) => {
+        return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    }
+
+    const onSuggestionsFetchRequested = ({ value }) => {
+        setProductos(filtrarProductos(value))
     }
 
     const onSuggestionsClearRequested = () => {
@@ -52,78 +54,72 @@ export const Search = () => {
     }
 
     const renderSuggestion = (suggestion) => (
-        <div
-            className='sugerencia'
-            onClick={() => seleccionarname(suggestion)}
-        // style={{ cursor: 'pointer', position: 'relative', padding: '5px', margin: '0px', borderRadius: '5px' }}
-        >
-            {`${suggestion.name} - ${suggestion.description}`}
+        <div className="sugerencia" onClick={() => seleccionarProducto(suggestion)}>
+            <div className="sugerencia__contenido">
+                <img className="sugerencia__imagen" src={suggestion.imageUrl} alt="Producto" />
+                <div className="sugerencia__texto">
+                    <p className="sugerencia__nombre">{suggestion.name}</p>
+                </div>
+            </div>
         </div>
     )
 
-    const seleccionarname = (name) => {
-        setProductoseleccionado(name)
+    const seleccionarProducto = (producto) => {
+        setProductoSeleccionado(producto)
+        handleRedirect(producto)
     }
 
-    const onChange = (e, { newValue }) => {
+    const onChange = (event, { newValue }) => {
         setValue(newValue)
     }
 
     const inputProps = {
-        placeholder: 'Nombre - Descripcion',
+        placeholder: 'Nombre del producto',
         value,
         onChange
     }
 
-    const eventEnter = (e) => {
-        if (e.key === 'Enter') {
-            const split = e.target.value.split('-')
-            const name = {
-                name: split[0].trim(),
-                description: split[1].trim()
-            }
-            seleccionarname(name)
+    const handleEnterKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            const [name, description] = event.target.value.split('-').map((str) => str.trim())
+            const selectedProduct = { name, description }
+            seleccionarProducto(selectedProduct)
         }
     }
-    const handleRedirect = (elproducto) => {
-        if (elproducto._id !== undefined &&
-            elproducto._id !== null &&
-            elproducto._id !== '' &&
-            elproducto._id !== 0 &&
-            elproducto._id !== '0' &&
-            elproducto._id !== 'undefined' &&
-            elproducto._id !== 'null' &&
-            elproducto._id !== 'NaN') {
-            navigate(`/productos/${elproducto._id}`)
+
+    const handleRedirect = (selectedProduct) => {
+        if (selectedProduct._id) {
+            navigate(`/productos/${selectedProduct._id}`)
         } else {
             navigate('/')
         }
     }
 
+    const toggleBuscador = () => {
+        setMostrarBuscador(!mostrarBuscador)
+    }
+
     return (
-        <div
-            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Autosuggest
-                style={{ border: '2px solid red' }}
-                suggestions={productos}
-                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
-                inputProps={inputProps}
-                onSuggestionSelected={eventEnter}
-            />
-            <button
-                className="btn btn-outline-success "
-                onClick={() => { handleRedirect(productoSeleccionado) }}
-                style={{
-                    width: 30
-                }}
-            >
-                <SearchOutlined
-                // style={{ display: 'inline-block' }}
-                />
-            </button>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+            {mostrarBuscador
+                ? (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Autosuggest
+                            suggestions={productos}
+                            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                            onSuggestionsClearRequested={onSuggestionsClearRequested}
+                            getSuggestionValue={getSuggestionValue}
+                            renderSuggestion={renderSuggestion}
+                            inputProps={inputProps}
+                            onSuggestionSelected={handleEnterKeyPress}
+                        />
+                        <CloseOutlined onClick={toggleBuscador} style={{ marginLeft: '0.5rem', cursor: 'pointer', color: '#8000e5', padding: '5px', border: '1px solid #8000e5', margin: '2px' }} />
+                    </div>
+                )
+                : (
+                    <SearchOutlined onClick={toggleBuscador} style={{ marginRight: '0.5rem', cursor: 'pointer', color: '#8000e5', padding: '5px', border: '1px solid #8000e5', margin: '2px' }} />
+
+                )}
         </div>
     )
 }

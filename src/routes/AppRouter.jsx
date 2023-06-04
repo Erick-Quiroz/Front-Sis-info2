@@ -1,9 +1,9 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
-
-import { AdminPage, CategoryCreatePage, CategoryPage, HomePage, OfferPage, ProductCreatePage, ProductoPage, ProductPage, ProveedorCreatePage, ProveedoresPage, RegisterPage, StockPage, LoginPage, FilterPage ,UserPage} from '../pages'
+import { AdminPage, CategoryCreatePage, CategoryPage, HomePage, OfferPage, ProductCreatePage, ProductoPage, ProductPage, ProveedorCreatePage, ProveedoresPage, RegisterPage, StockPage, LoginPage, FilterPage, UserPage } from '../pages'
 import { ItemList } from '../pages/Cart/components/ItemList'
 import { ShoppingCart } from '../pages/Cart/components/ShoppingCart'
+
 const router = createBrowserRouter([
     {
         path: '/',
@@ -63,11 +63,10 @@ const router = createBrowserRouter([
         errorElement: <h1>error</h1>
     },
 
-   
     {
         path: '/User',
         element: <UserPage />,
-        errorElement: <h1>error</h1> 
+        errorElement: <h1>error</h1>
     },
 
     {
@@ -88,28 +87,24 @@ const router = createBrowserRouter([
         errorElement: <h1>error</h1>
 
     },
-    { 
-    
+    {
+
         path: '/User',
         element: <UserPage />,
         errorElement: <h1>error</h1>
-    
-    
-        
-    }
-    ,
+
+    },
     {
         path: '/Login',
         element: <LoginPage />,
         errorElement: <h1>error</h1>
 
-
     },
     {
         path: '/Filter',
         element: <FilterPage />,
-        errorElement: <h1>error</h1>,
-    },
+        errorElement: <h1>error</h1>
+    }
 ])
 
 export const AppRouter = () => {
