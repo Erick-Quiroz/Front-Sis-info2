@@ -246,10 +246,10 @@ input:focus {
 .modal__product {
   position: absolute;
   top: 0;
-  margin-top: 80vh;
+  margin-top: calc(90vh - 50vh);
   left: 60%;
   margin-left: 10vh;
-  max-width: 50%;
+  max-width: 100%;
   border-radius: 8%;
   -ms-transform: translateX(calc(-50% - 10px));
   transform: translateX(calc(-50% - 10px));

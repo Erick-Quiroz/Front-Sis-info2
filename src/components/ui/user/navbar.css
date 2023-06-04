@@ -144,7 +144,7 @@ a {
 
 /*---------responsive----------------------------*/
 
-@media screen and (max-width: 1220px) {
+@media screen and (max-width: 920px) {
   .sb__navbar-links_container {
     display: none;
   }
