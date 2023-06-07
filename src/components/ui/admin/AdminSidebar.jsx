@@ -14,7 +14,7 @@ export const AdminSidebar = () => {
                     height: '10vh',
 
                     margin: '1vh',
-                    witch: '30vh'
+                    witch: '60vh'
 
                 }}
             >
@@ -24,9 +24,8 @@ export const AdminSidebar = () => {
                     src={imageLogo2}
                     style={{
                         height: '10vh',
-
-                        margin: '1vh',
-                        witch: '30vh'
+                        width: '17vh',
+                        margin: '1vh'
 
                     }}
                 />

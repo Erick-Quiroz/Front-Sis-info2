@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../index.css'
 import axios from 'axios'
-
+import BACKENDURL from '../../../utils/backendUrl.js'
 import { Item } from './Item'
 // import { Navbar } from '../components/NavBar'
 import { Layout, theme, Button, Modal } from 'antd'
@@ -13,7 +13,7 @@ export const ItemList = () => {
 
     const getAllCategory = async () => {
         try {
-            const { data } = await axios.get('https://sistema-back.onrender.com/api/productLG/get-productLG')
+            const { data } = await axios.get(`${BACKENDURL}/api/productLG/get-productLG`)
             if (data.success) {
                 setCategories(data.product)
             }

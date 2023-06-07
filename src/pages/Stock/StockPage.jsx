@@ -35,31 +35,6 @@ export const StockPage = () => {
         getAllCategory()
     }, [])
 
-    const handleDelete = async (pId) => {
-        try {
-            const { data } = await axios.delete(
-                `${BACKENDURL}/api/productLG/productLG/${pId}`
-            )
-            if (data.success) {
-                toast.success('category is deleted')
-                getAllCategory()
-            } else {
-                toast.error(data.message)
-            }
-        } catch (error) {
-            toast.error('Somtihing went wrong')
-        }
-        toast.success('category is deleted')
-        enqueueSnackbar('Producto Eliminado', {
-            variant: 'error',
-            autoHideDuration: 1500,
-            anchorOrigin: {
-                vertical: 'top',
-                horizontal: 'right'
-            }
-        })
-    }
-
     const handleGetProduct = async (pid) => {
         try {
             const { data } = await axios.get(`${BACKENDURL}/api/productLG/get-productLG/${pid}`)
